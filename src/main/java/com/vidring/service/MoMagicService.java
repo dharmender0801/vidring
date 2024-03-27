@@ -49,7 +49,7 @@ public class MoMagicService {
 			notification = notification.replace("#event#", event);
 			notification = notification.replace("#fail_reason#", failResaon);
 			dbUtil.saveNotfication(msisdn, notification, "880", "1");
-			log.info("MoMagic Notification ::::  " + notification);
+			log.info("MoMagic Notification :::: {} ", notification);
 			if (event.equalsIgnoreCase("subscription")) {
 				VidringSubscriptionModel subModel = dbUtil.saveUserSubscription(msisdn, billingId, status);
 				if (status.equalsIgnoreCase("success")) {
@@ -94,10 +94,10 @@ public class MoMagicService {
 					String httpResponse =
 //							"{ \"success\": true, \"status_code\": 200, \"redirect_url\": \"redirect_url_for_pin_submission\" }";
 							HttpUtil.sendRequest(vidringPartnerModel.getEndPoint(), requestBody);
-					log.info("Request  ::::   " + requestBody);
-					log.info("Response ::::   " + httpResponse);
-					dbUtil.saveSubscriptionRequest(request.getMsisdn(), transactionId, productModel, requestBody,
-							httpResponse);
+					log.info("Request  ::::  {} ", requestBody);
+					log.info("Response ::::  {} ", httpResponse);
+					dbUtil.saveSubscriptionRequest(request.getMsisdn(), String.valueOf(transactionId), productModel,
+							requestBody, httpResponse);
 					JsonNode reqNode = mapper.readTree(httpResponse);
 					if (reqNode.get("success").asBoolean()) {
 						BeanUtils.copyProperties(ConstantManager.getSuccess(), response);

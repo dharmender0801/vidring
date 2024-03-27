@@ -102,12 +102,12 @@ public class DBUtil {
 
 	}
 
-	public void saveSubscriptionRequest(String msisdn, long transactionId, VidringProductModel productModel,
+	public void saveSubscriptionRequest(String msisdn, String transactionId, VidringProductModel productModel,
 			String requestBody, String httpResponse) {
 		// TODO Auto-generated method stub
 		VidringSubscriptionRequestModel requestModel = new VidringSubscriptionRequestModel();
 		requestModel.setMsisdn(msisdn);
-		requestModel.setTransactionId(String.valueOf(transactionId));
+		requestModel.setTransactionId(transactionId);
 		requestModel.setProductModel(productModel);
 		requestModel.setRequest(requestBody);
 		requestModel.setResponse(httpResponse);

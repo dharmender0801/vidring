@@ -39,4 +39,10 @@ public class VidringProductModel {
 	private String operatorName;
 	@Column
 	private String keyWord;
+	@Column
+	private String mcc;
+	@Column
+	private String mnc;
+	@Column
+	private String campaign;
 }
