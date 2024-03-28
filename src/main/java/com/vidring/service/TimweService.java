@@ -65,9 +65,25 @@ public class TimweService {
 
 	}
 
-	public StatusResponse handleNotification(NotificationRequest notificationRequest, String roleId) {
+	public StatusResponse handleNotification(NotificationRequest notificationRequest, String roleId, String action) {
 		// TODO Auto-generated method stub
-		return null;
+		log.info("Test : {} ", notificationRequest);
+		try {
+			if (Boolean.TRUE.equals(action.equalsIgnoreCase("sub"))) {
+
+			} else if (Boolean.TRUE.equals(action.equalsIgnoreCase("ren"))) {
+
+			} else if (Boolean.TRUE.equals(action.equalsIgnoreCase("unsub"))) {
+
+			} else if (Boolean.TRUE.equals(action.equalsIgnoreCase("mt"))) {
+
+			} else if (Boolean.TRUE.equals(action.equalsIgnoreCase("mo"))) {
+
+			}
+		} catch (Exception e) {
+			return ConstantManager.getInternalServerError();
+		}
+		return ConstantManager.getSuccess();
 	}
 
 }
