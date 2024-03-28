@@ -4,11 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.vidring.request.NotificationRequest;
 import com.vidring.request.PinPushRequest;
 import com.vidring.response.StatusResponse;
 import com.vidring.service.TimweService;
@@ -31,8 +33,44 @@ public class TimweController {
 		return response.getStatusCode() == 200 ? new ResponseEntity<>(response, HttpStatus.OK)
 				: new ResponseEntity<>(response, HttpStatus.BAD_GATEWAY);
 	}
-	
-//	@PostMapping("/v1/notification")
-	
 
+	@PostMapping("/v1/notification/mo/{partnerRole}")
+	public ResponseEntity<StatusResponse> moNotification(@PathVariable("partnerRole") String roleId,
+			@RequestBody NotificationRequest notificationRequest) {
+		StatusResponse response = timweService.handleNotification(notificationRequest, roleId);
+		return response.getStatusCode() == 200 ? new ResponseEntity<>(response, HttpStatus.OK)
+				: new ResponseEntity<>(response, HttpStatus.BAD_GATEWAY);
+	}
+
+	@PostMapping("/v1/notification/mt/dn/{partnerRole}")
+	public ResponseEntity<StatusResponse> mtNotification(@PathVariable("partnerRole") String roleId,
+			@RequestBody NotificationRequest notificationRequest) {
+		StatusResponse response = timweService.handleNotification(notificationRequest, roleId);
+		return response.getStatusCode() == 200 ? new ResponseEntity<>(response, HttpStatus.OK)
+				: new ResponseEntity<>(response, HttpStatus.BAD_GATEWAY);
+	}
+
+	@PostMapping("/v1/notification/user-optin/{partnerRole}")
+	public ResponseEntity<StatusResponse> SubNotification(@PathVariable("partnerRole") String roleId,
+			@RequestBody NotificationRequest notificationRequest) {
+		StatusResponse response = timweService.handleNotification(notificationRequest, roleId);
+		return response.getStatusCode() == 200 ? new ResponseEntity<>(response, HttpStatus.OK)
+				: new ResponseEntity<>(response, HttpStatus.BAD_GATEWAY);
+	}
+
+	@PostMapping("/v1/notification/user-renewed/{partnerRole}")
+	public ResponseEntity<StatusResponse> RenNotification(@PathVariable("partnerRole") String roleId,
+			@RequestBody NotificationRequest notificationRequest) {
+		StatusResponse response = timweService.handleNotification(notificationRequest, roleId);
+		return response.getStatusCode() == 200 ? new ResponseEntity<>(response, HttpStatus.OK)
+				: new ResponseEntity<>(response, HttpStatus.BAD_GATEWAY);
+	}
+
+	@PostMapping("/v1/notification/user-optout/{partnerRole}")
+	public ResponseEntity<StatusResponse> unsubNotification(@PathVariable("partnerRole") String roleId,
+			@RequestBody NotificationRequest notificationRequest) {
+		StatusResponse response = timweService.handleNotification(notificationRequest, roleId);
+		return response.getStatusCode() == 200 ? new ResponseEntity<>(response, HttpStatus.OK)
+				: new ResponseEntity<>(response, HttpStatus.BAD_GATEWAY);
+	}
 }

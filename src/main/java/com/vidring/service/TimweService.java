@@ -9,6 +9,7 @@ import com.vidring.model.VidringPartnerModel;
 import com.vidring.model.VidringProductModel;
 import com.vidring.repository.VidringPartnerRepo;
 import com.vidring.repository.VidringProductRepo;
+import com.vidring.request.NotificationRequest;
 import com.vidring.request.PinPushRequest;
 import com.vidring.response.StatusResponse;
 import com.vidring.util.ConstantManager;
@@ -62,6 +63,11 @@ public class TimweService {
 			return ConstantManager.getInternalServerError();
 		}
 
+	}
+
+	public StatusResponse handleNotification(NotificationRequest notificationRequest, String roleId) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
