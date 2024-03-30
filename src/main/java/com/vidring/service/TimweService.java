@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.vidring.model.VidringPartnerModel;
 import com.vidring.model.VidringProductModel;
+import com.vidring.model.VidringSubscriptionModel;
 import com.vidring.repository.VidringPartnerRepo;
 import com.vidring.repository.VidringProductRepo;
 import com.vidring.request.NotificationRequest;
@@ -45,7 +46,6 @@ public class TimweService {
 					requestBody = requestBody.replace("{mcc}", productModel.getMcc());
 					requestBody = requestBody.replace("{mnc}", productModel.getMnc());
 					requestBody = requestBody.replace("{campaign}", productModel.getCampaign());
-
 					String httpResponse = HttpUtil.sendRequest(partnerModel.getEndPoint(), requestBody);
 					log.info("Timwe Pin Push Request  ::::  {} ", requestBody);
 					log.info("Timwe Pin Push Response ::::  {} ", httpResponse);
@@ -70,11 +70,12 @@ public class TimweService {
 		log.info("Test : {} ", notificationRequest);
 		try {
 			if (Boolean.TRUE.equals(action.equalsIgnoreCase("sub"))) {
-
+				VidringSubscriptionModel model = dbUtil.saveUserSubscription(notificationRequest, "Web");
+				dbUtil.updateUserSubscription(notificationRequest.getMsisdn());
 			} else if (Boolean.TRUE.equals(action.equalsIgnoreCase("ren"))) {
-
+				dbUtil.updateUserSubscription(notificationRequest.getMsisdn());
 			} else if (Boolean.TRUE.equals(action.equalsIgnoreCase("unsub"))) {
-
+				dbUtil.unSubscribeUser(notificationRequest.getMsisdn());
 			} else if (Boolean.TRUE.equals(action.equalsIgnoreCase("mt"))) {
 
 			} else if (Boolean.TRUE.equals(action.equalsIgnoreCase("mo"))) {

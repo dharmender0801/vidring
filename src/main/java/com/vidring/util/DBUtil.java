@@ -18,6 +18,7 @@ import com.vidring.repository.VidringProductRepo;
 import com.vidring.repository.VidringSubRepo;
 import com.vidring.repository.VidringSubscriptionRequestRepo;
 import com.vidring.repository.VidringUnSubscriptionRepo;
+import com.vidring.request.NotificationRequest;
 
 @Component
 public class DBUtil {
@@ -50,7 +51,7 @@ public class DBUtil {
 		VidringSubscriptionModel subModel = null;
 		VidringSubscriptionRequestModel requestModel = repo.findByTransactionId(billingId);
 		if (requestModel != null) {
-			VidringSubscriptionModel checkModel = vidringSubRepo.findByMsisdn(msisdn);
+			VidringSubscriptionModel checkModel = vidringSubRepo.findByMsisdn(msisdn).get();
 			if (checkModel == null) {
 				VidringSubscriptionModel subscriptionModel = new VidringSubscriptionModel();
 				BeanUtils.copyProperties(requestModel, subscriptionModel);
@@ -72,9 +73,23 @@ public class DBUtil {
 
 	}
 
+	public VidringSubscriptionModel saveUserSubscription(NotificationRequest notification, String channel) {
+		VidringSubscriptionModel subModel = vidringSubRepo.findByMsisdn(notification.getMsisdn())
+				.orElse(new VidringSubscriptionModel());
+
+		VidringProductModel productModel = productRepo.findByMccAndMnc(notification.getMcc(), notification.getMnc());
+		subModel.setMsisdn(notification.getMsisdn());
+		subModel.setProductModel(productModel);
+		subModel.setValidity(productModel.getValidity());
+		subModel.setSubscriptionDate(new Date());
+		subModel.setChannel(channel);
+		subModel = vidringSubRepo.save(subModel);
+		return subModel;
+	}
+
 	public void updateUserSubscription(String msisdn) {
 		// TODO Auto-generated method stub
-		VidringSubscriptionModel subModel = vidringSubRepo.findByMsisdn(msisdn);
+		VidringSubscriptionModel subModel = vidringSubRepo.findByMsisdn(msisdn).get();
 		if (subModel != null) {
 			if (subModel.getChargeDate() != null) {
 				saveToSuccessBilling(subModel, "ren");
@@ -90,7 +105,7 @@ public class DBUtil {
 
 	public void unSubscribeUser(String msisdn) {
 		// TODO Auto-generated method stub
-		VidringSubscriptionModel subModel = vidringSubRepo.findByMsisdn(msisdn);
+		VidringSubscriptionModel subModel = vidringSubRepo.findByMsisdn(msisdn).get();
 		if (subModel != null) {
 			VidringUnSubscriptionModel unSubscriptionModel = new VidringUnSubscriptionModel();
 			BeanUtils.copyProperties(subModel, unSubscriptionModel);

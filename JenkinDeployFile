@@ -1,0 +1,23 @@
+pipeline {
+    agent any
+    triggers {
+        pollSCM 'H * * * *'
+    }
+    stages {
+        stage('Build') {
+            steps {
+               script{
+                    echo 'Pulling...' + env.BRANCH_NAME
+                    sh 'mvn install -DskipTests'
+               }
+            }
+        }
+        stage('Deploy') {
+            steps {
+                script{
+                    sh 'mv target/api.war /opt/home/apache-tomcat-vidring-billing/webapps/'
+                }
+            }
+        }
+    }
+}

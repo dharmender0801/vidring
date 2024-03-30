@@ -38,5 +38,7 @@ public class VidringSubscriptionModel {
 	private Date subscriptionDate;
 	@Column
 	private Integer validity;
+	@Column
+	private String channel;
 
 }
