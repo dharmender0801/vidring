@@ -15,7 +15,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 script{
-                    sh 'mv target/api.war /opt/home/apache-tomcat-vidring-billing/webapps/'
+                    sh 'mv target/api.war /opt/home/apache-tomcat-billing/webapps/'
                 }
             }
         }
