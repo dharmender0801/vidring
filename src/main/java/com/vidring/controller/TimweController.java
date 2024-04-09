@@ -16,7 +16,7 @@ import com.vidring.response.StatusResponse;
 import com.vidring.service.TimweService;
 
 @RestController
-@RequestMapping("/api/at-timwe/")
+@RequestMapping("/at-timwe/")
 public class TimweController {
 
 	@Autowired

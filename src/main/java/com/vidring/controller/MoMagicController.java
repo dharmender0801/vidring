@@ -17,7 +17,7 @@ import com.vidring.response.statusResponseWithUrl;
 import com.vidring.service.MoMagicService;
 
 @RestController
-@RequestMapping("/api/mo-magic/")
+@RequestMapping("/mo-magic/")
 public class MoMagicController {
 	@Autowired
 	private MoMagicService magicService;
