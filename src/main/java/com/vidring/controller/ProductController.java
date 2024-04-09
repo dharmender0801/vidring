@@ -35,7 +35,7 @@ public class ProductController {
 	@Autowired
 	private ProductService productService;
 
-	@ApiOperation(value = "Get Multiple Articles", response = VidringProductDto.class, httpMethod = "GET", notes = "")
+	@ApiOperation(value = "Get Multiple Product", response = VidringProductDto.class, httpMethod = "GET", notes = "")
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "ok", response = VidringProductDto.class, responseContainer = "LIS"),
 			@ApiResponse(code = 401, message = "Not Authorized"),
@@ -51,7 +51,7 @@ public class ProductController {
 				: RestUtils.errorResponse(null, Constants.FAIL, HttpStatus.NOT_FOUND);
 	}
 
-	@ApiOperation(value = "Add New Banner Detail", response = VidringProductDto.class, httpMethod = "POST", notes = "This API creates new Banner of updates details about the current sections.")
+	@ApiOperation(value = "Add Product ", response = VidringProductDto.class, httpMethod = "POST", notes = "This API creates new Banner of updates details about the current sections.")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "ok", response = VidringProductDto.class),
 			@ApiResponse(code = 401, message = "Not Authorized"),
 			@ApiResponse(code = 403, message = "Not Authenticated"), @ApiResponse(code = 404, message = "Not found"),
