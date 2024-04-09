@@ -27,4 +27,5 @@ public class VidringProductDto {
 	private String mcc;
 	private String mnc;
 	private String campaign;
+	private String packName;
 }

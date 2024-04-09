@@ -45,4 +45,6 @@ public class VidringProductModel {
 	private String mnc;
 	@Column
 	private String campaign;
+	@Column
+	private String packName;
 }
