@@ -1,7 +1,7 @@
 package com.vidring.service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,9 +18,11 @@ public class ProductService {
 	private VidringProductRepo productRepo;
 
 	public List<VidringProductDto> geProductData() {
-		List<VidringProductDto> dtos = new ArrayList<>();
-		List<VidringProductModel> productModel = productRepo.findAll();
-		Utils.copyProperties(productModel, dtos);
+		List<VidringProductDto> dtos = productRepo.findAll().stream().map(product -> {
+			VidringProductDto dto = new VidringProductDto();
+			Utils.copyProperties(product, dto);
+			return dto;
+		}).collect(Collectors.toList());
 		return dtos;
 	}
 
