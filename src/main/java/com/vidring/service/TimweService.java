@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import com.nigeria.restTemplateRequest.UaeUnsubHttpRequest;
 import com.vidring.model.VidringPartnerModel;
 import com.vidring.model.VidringProductModel;
 import com.vidring.model.VidringSubscriptionModel;
@@ -23,7 +22,6 @@ import com.vidring.restTemplateRequests.subscriptionOptinRequest;
 import com.vidring.restTemplateResponse.SubscriptonOptinResponse;
 import com.vidring.util.ConstantManager;
 import com.vidring.util.DBUtil;
-import com.vidring.util.HttpUtil;
 import com.vidring.util.Utils;
 
 import lombok.extern.slf4j.Slf4j;
