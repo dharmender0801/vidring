@@ -63,7 +63,9 @@ public class TimweService {
 					log.info("Timwe Pin Push Request  ::::  {} ", optinRequest);
 					String endPoint = partnerModel.getEndPoint();
 					HttpHeaders headers = new HttpHeaders();
-					headers.set("apikey", "EtisalatTesting1111");
+					headers.set("apikey", partnerModel.getUserName());
+					headers.set("external-tx-id", String.valueOf(transactionId));
+					headers.set("authentication", partnerModel.getPassword());
 					HttpEntity<subscriptionOptinRequest> requestEntity = new HttpEntity<>(optinRequest, headers);
 					ResponseEntity<SubscriptonOptinResponse> responseEntity = restTemplate.exchange(endPoint,
 							HttpMethod.POST, requestEntity, SubscriptonOptinResponse.class);
