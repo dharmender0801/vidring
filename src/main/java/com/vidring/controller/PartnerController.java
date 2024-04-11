@@ -1,10 +1,12 @@
 package com.vidring.controller;
 
+import java.util.List;
 import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -47,6 +49,22 @@ public class PartnerController {
 		partnerDto = partnerService.addProductDetails(partnerDto);
 		return (Boolean.TRUE.equals(Objects.nonNull(partnerDto)))
 				? RestUtils.successResponse(partnerDto, Constants.SUCCESS, HttpStatus.OK)
+				: RestUtils.errorResponse(null, Constants.FAIL, HttpStatus.NOT_FOUND);
+	}
+
+	@ApiOperation(value = "Get Multiple Partner", response = VidringPartnerDto.class, httpMethod = "GET", notes = "")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "ok", response = VidringPartnerDto.class, responseContainer = "LIS"),
+			@ApiResponse(code = 401, message = "Not Authorized"),
+			@ApiResponse(code = 403, message = "Not Authenticated"), @ApiResponse(code = 404, message = "Not found"),
+			@ApiResponse(code = 500, message = "Internal Server Error") })
+	@GetMapping(path = "/getPartnerData", produces = "application/json")
+	public ResponseEntity<RestResponse<List<VidringPartnerDto>>> getData(
+			@RequestHeader(name = Constants.DEVICE_TYPE) DeviceType deviceType,
+			@RequestHeader(name = Constants.APP_VERSION) String appVersion) throws Exception {
+		List<VidringPartnerDto> data = partnerService.geProductData();
+		return (Boolean.TRUE.equals(Objects.nonNull(data)))
+				? RestUtils.successResponse(data, Constants.SUCCESS, HttpStatus.OK)
 				: RestUtils.errorResponse(null, Constants.FAIL, HttpStatus.NOT_FOUND);
 	}
 
