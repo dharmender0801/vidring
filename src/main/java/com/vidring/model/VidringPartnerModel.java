@@ -33,5 +33,7 @@ public class VidringPartnerModel {
 	private String denyUrl;
 	@Column
 	private String errorUrl;
+	@Column
+	private String partnerId;
 
 }

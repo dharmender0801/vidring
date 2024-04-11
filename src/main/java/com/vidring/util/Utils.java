@@ -7,6 +7,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 public class Utils {
 	public static void copyProperties(Object source, Object target) {
 		BeanUtils.copyProperties(source, target, getNullPropertyNames(source));
@@ -23,5 +25,15 @@ public class Utils {
 		}
 		String[] result = new String[emptyNames.size()];
 		return emptyNames.toArray(result);
+	}
+
+	public static String classToJsonConvert(Object objects) {
+		try {
+			ObjectMapper objectMapper = new ObjectMapper();
+			String json = objectMapper.writeValueAsString(objects);
+			return json;
+		} catch (Exception e) {
+			return null;
+		}
 	}
 }

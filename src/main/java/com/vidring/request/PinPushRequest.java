@@ -8,6 +8,5 @@ public class PinPushRequest {
 	private String msisdn;
 	private String productId;
 	private String channel;
-	private String transactionId;
 
 }

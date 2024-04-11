@@ -1,24 +1,22 @@
 package com.vidring.util;
 
-import java.io.IOException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
-
+@Service
 public class HttpUtil {
-	public static String sendRequest(String url, String body) throws IOException {
-		OkHttpClient client = new OkHttpClient().newBuilder().build();
-		MediaType mediaType = MediaType.parse("application/json");
-		@SuppressWarnings("deprecation")
-		RequestBody pinGenbody = RequestBody.create(mediaType, body);
-		Request pinGenRequest = new Request.Builder().url(url).method("POST", pinGenbody)
-				.addHeader("Content-Type", "application/json").build();
-		Response pinVerifyresponse = client.newCall(pinGenRequest).execute();
-		String responseData = pinVerifyresponse.body().string();
-		return responseData;
+
+	@Autowired
+	RestTemplate restTemplate;
+
+	public <T> ResponseEntity<T> sendRequest(String httpUrl, HttpEntity<?> requestEntity, HttpMethod httpMethod,
+			Class<T> responseType) {
+		ResponseEntity<T> responseEntity = restTemplate.exchange(httpUrl, httpMethod, requestEntity, responseType);
+		return responseEntity;
 	}
 
 }
