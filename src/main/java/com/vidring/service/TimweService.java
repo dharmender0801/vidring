@@ -40,7 +40,7 @@ public class TimweService {
 						.findByCountryCodeAndOperatorId(productModel.getCountryCode(), productModel.getOperatorId());
 				if (Boolean.TRUE.equals(Objects.nonNull(partnerModel))) {
 					String requestBody = partnerModel.getRequestBody();
-					requestBody = requestBody.replace("{subKeyword}", productModel.getKeyWord());
+					requestBody = requestBody.replace("{subKeyword}", productModel.getSubKeyword());
 					requestBody = requestBody.replace("{trackingId}", pinPushRequest.getTransactionId());
 					requestBody = requestBody.replace("{entryChannel}", pinPushRequest.getChannel());
 					requestBody = requestBody.replace("{mcc}", productModel.getMcc());

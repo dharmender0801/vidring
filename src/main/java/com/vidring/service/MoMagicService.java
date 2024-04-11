@@ -85,7 +85,7 @@ public class MoMagicService {
 					String requestBody = vidringPartnerModel.getRequestBody();
 					System.out.println("test");
 					requestBody = requestBody.replace("{transactionId}", String.valueOf(transactionId));
-					requestBody = requestBody.replace("{keyword}", productModel.getKeyWord());
+					requestBody = requestBody.replace("{keyword}", productModel.getSubKeyword());
 					requestBody = requestBody.replace("{msisdn}", request.getMsisdn());
 					requestBody = requestBody.replace("{amount}", productModel.getPricePoint());
 					requestBody = requestBody.replace("{sucessUrl}", vidringPartnerModel.getSuccessUrl());
