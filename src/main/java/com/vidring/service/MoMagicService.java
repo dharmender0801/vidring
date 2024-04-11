@@ -91,9 +91,9 @@ public class MoMagicService {
 					requestBody = requestBody.replace("{sucessUrl}", vidringPartnerModel.getSuccessUrl());
 					requestBody = requestBody.replace("{denyUrl}", vidringPartnerModel.getDenyUrl());
 					requestBody = requestBody.replace("{errorUrl}", vidringPartnerModel.getErrorUrl());
-					String httpResponse =
+					String httpResponse ="";
 //							"{ \"success\": true, \"status_code\": 200, \"redirect_url\": \"redirect_url_for_pin_submission\" }";
-							HttpUtil.sendRequest(vidringPartnerModel.getEndPoint(), requestBody);
+//							HttpUtil.sendRequest(vidringPartnerModel.getEndPoint(), requestBody);
 					log.info("Request  ::::  {} ", requestBody);
 					log.info("Response ::::  {} ", httpResponse);
 					dbUtil.saveSubscriptionRequest(request.getMsisdn(), String.valueOf(transactionId), productModel,
