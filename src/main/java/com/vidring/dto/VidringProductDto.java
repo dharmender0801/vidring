@@ -23,9 +23,12 @@ public class VidringProductDto {
 	private String offerCode;
 	private String operatorId;
 	private String operatorName;
-	private String keyWord;
 	private String mcc;
 	private String mnc;
 	private String campaign;
 	private String packName;
+	private String subKeyword;
+	private String unsubKeyword;
+	private String shortCode;
+	private String description;
 }

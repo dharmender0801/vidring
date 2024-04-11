@@ -38,7 +38,9 @@ public class VidringProductModel {
 	@Column
 	private String operatorName;
 	@Column
-	private String keyWord;
+	private String subKeyword;
+	@Column
+	private String unsubKeyword;
 	@Column
 	private String mcc;
 	@Column
@@ -47,4 +49,9 @@ public class VidringProductModel {
 	private String campaign;
 	@Column
 	private String packName;
+	@Column
+	private String shortCode;
+	@Column
+	private String description;
+
 }

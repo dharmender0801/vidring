@@ -28,6 +28,9 @@ public class ProductService {
 
 	public VidringProductDto addProductDetails(VidringProductDto productDto) {
 		VidringProductModel productModel = new VidringProductModel();
+		if (Boolean.TRUE.equals(productDto.getId() != null)) {
+			productModel = productRepo.findById(productDto.getId()).orElse(new VidringProductModel());
+		}
 		Utils.copyProperties(productDto, productModel);
 		productModel = productRepo.save(productModel);
 		Utils.copyProperties(productModel, productDto);
