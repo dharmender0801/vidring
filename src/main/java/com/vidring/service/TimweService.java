@@ -52,6 +52,7 @@ public class TimweService {
 					subscriptionOptinRequest optinRequest = new subscriptionOptinRequest();
 					optinRequest.setUserIdentifier(pinPushRequest.getMsisdn());
 					optinRequest.setClientIp("Tst");
+					optinRequest.setUserIdentifierType("sub");
 					optinRequest.setLargeAccount("1936");
 					optinRequest.setCampaignUrl(productModel.getCampaign());
 					optinRequest.setSubKeyword(productModel.getSubKeyword());
@@ -61,7 +62,7 @@ public class TimweService {
 					optinRequest.setMnc(productModel.getMnc());
 					optinRequest.setProductId(productModel.getOfferCode());
 					String endPoint = partnerModel.getEndPoint();
-					log.info("Timwe pin Push Push end point ", endPoint);
+					log.info("Timwe pin Push Push end point "+ endPoint);
 					log.info("Timwe Pin Push Request  ::::  {} ", optinRequest);
 					HttpHeaders headers = new HttpHeaders();
 					headers.set("apikey", partnerModel.getUserName());
