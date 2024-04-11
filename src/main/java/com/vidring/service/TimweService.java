@@ -60,8 +60,9 @@ public class TimweService {
 					optinRequest.setMcc(productModel.getMcc());
 					optinRequest.setMnc(productModel.getMnc());
 					optinRequest.setProductId(productModel.getOfferCode());
-					log.info("Timwe Pin Push Request  ::::  {} ", optinRequest);
 					String endPoint = partnerModel.getEndPoint();
+					log.info("Timwe pin Push Push end point ", endPoint);
+					log.info("Timwe Pin Push Request  ::::  {} ", optinRequest);
 					HttpHeaders headers = new HttpHeaders();
 					headers.set("apikey", partnerModel.getUserName());
 					headers.set("external-tx-id", String.valueOf(transactionId));
@@ -69,7 +70,6 @@ public class TimweService {
 					HttpEntity<subscriptionOptinRequest> requestEntity = new HttpEntity<>(optinRequest, headers);
 					ResponseEntity<SubscriptonOptinResponse> responseEntity = restTemplate.exchange(endPoint,
 							HttpMethod.POST, requestEntity, SubscriptonOptinResponse.class);
-
 					log.info("Timwe Pin Push Response ::::  {} ", responseEntity);
 					SubscriptonOptinResponse httpResponse = responseEntity.getBody();
 					dbUtil.saveSubscriptionRequest(pinPushRequest.getMsisdn(), String.valueOf(transactionId),
