@@ -23,9 +23,9 @@ public class SwaggerConfig {
 	}
 
 	private ApiInfo apiInfo() {
-		return new ApiInfoBuilder().title("Minus One Rest Api's")
-				.description("This page lists all the Rest APIs for Nubit Minus-One Platform.").version("0.1.1")
-				.build();
+		return new ApiInfoBuilder().title("Vidring Billing ")
+				.description("This page lists all the Rest APIs for Vidring Billing Integration Platform.")
+				.version("0.1.1").build();
 	}
 
 }
