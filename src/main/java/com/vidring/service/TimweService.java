@@ -60,14 +60,14 @@ public class TimweService {
 					optinRequest.setMcc(productModel.getMcc());
 					optinRequest.setMnc(productModel.getMnc());
 					optinRequest.setProductId(productModel.getOfferCode());
-
+					log.info("Timwe Pin Push Request  ::::  {} ", optinRequest);
 					String endPoint = partnerModel.getEndPoint();
 					HttpHeaders headers = new HttpHeaders();
 					headers.set("apikey", "EtisalatTesting1111");
 					HttpEntity<subscriptionOptinRequest> requestEntity = new HttpEntity<>(optinRequest, headers);
 					ResponseEntity<SubscriptonOptinResponse> responseEntity = restTemplate.exchange(endPoint,
 							HttpMethod.POST, requestEntity, SubscriptonOptinResponse.class);
-					log.info("Timwe Pin Push Request  ::::  {} ", optinRequest);
+
 					log.info("Timwe Pin Push Response ::::  {} ", responseEntity);
 					SubscriptonOptinResponse httpResponse = responseEntity.getBody();
 					dbUtil.saveSubscriptionRequest(pinPushRequest.getMsisdn(), String.valueOf(transactionId),
