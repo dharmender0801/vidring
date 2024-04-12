@@ -1,6 +1,13 @@
 package com.vidring.service;
 
+import java.security.Key;
+import java.security.SecureRandom;
+import java.util.Base64;
 import java.util.Objects;
+
+import javax.crypto.Cipher;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -65,9 +72,11 @@ public class TimweService {
 					log.info("Timwe pin Push Push end point " + endPoint);
 					log.info("Timwe Pin Push Request  ::::  {} ", Utils.classToJsonConvert(optinRequest));
 					HttpHeaders headers = new HttpHeaders();
+					String auth = encrypt("708", partnerModel.getPassword());
+					log.info(auth);
 					headers.set("apikey", partnerModel.getUserName());
 					headers.set("external-tx-id", String.valueOf(transactionId));
-					headers.set("authentication", partnerModel.getPassword());
+					headers.set("authentication", auth);
 					headers.set("Content-Type", "application/json");
 					headers.set("accept", "application/json");
 					HttpEntity<subscriptionOptinRequest> requestEntity = new HttpEntity<>(optinRequest, headers);
@@ -90,6 +99,17 @@ public class TimweService {
 			return ConstantManager.getInternalServerError();
 		}
 
+	}
+
+	String encrypt(String Data, String preSharedKey) throws Exception {
+		long timestamp = System.currentTimeMillis();
+		String timestampStr = String.valueOf(timestamp);
+		String data = Data + "#" + timestampStr;
+		SecretKeySpec keySpec = new SecretKeySpec(preSharedKey.getBytes(), "AES");
+		Cipher c = Cipher.getInstance("AES/CBC/PKCS5PADDING");
+		c.init(Cipher.ENCRYPT_MODE, keySpec, new IvParameterSpec(new SecureRandom().generateSeed(16)));
+		byte[] encVal = c.doFinal(data.getBytes());
+		return new String(Base64.getEncoder().encodeToString(encVal));
 	}
 
 	public StatusResponse handleNotification(NotificationRequest notificationRequest, String roleId, String action) {
