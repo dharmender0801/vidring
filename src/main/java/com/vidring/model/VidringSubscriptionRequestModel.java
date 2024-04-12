@@ -27,7 +27,7 @@ public class VidringSubscriptionRequestModel {
 	private String transactionId;
 	@Column
 	private Date requestDate;
-	@Column
+	@Column(columnDefinition = "1025")
 	private String request;
 	@Column
 	private String response;

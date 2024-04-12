@@ -162,8 +162,7 @@ public class TimweService {
 		log.info("Test : {} ", notificationRequest);
 		try {
 			if (Boolean.TRUE.equals(action.equalsIgnoreCase("sub"))) {
-				VidringSubscriptionModel model = dbUtil.saveUserSubscription(notificationRequest, "Web");
-				dbUtil.updateUserSubscription(notificationRequest.getUserIdentifier());
+				dbUtil.saveUserSubscription(notificationRequest, "WEB");
 			} else if (Boolean.TRUE.equals(action.equalsIgnoreCase("ren"))) {
 				dbUtil.updateUserSubscription(notificationRequest.getUserIdentifier());
 			} else if (Boolean.TRUE.equals(action.equalsIgnoreCase("unsub"))) {
