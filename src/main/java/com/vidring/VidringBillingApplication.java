@@ -51,7 +51,6 @@ public class VidringBillingApplication {
 	public static final String PROPERTIES_FILE_NAME = String.join(",", PROPERTY_FILES);
 
 	public static void main(String[] args) {
-
 		String configLocation = System.getProperty(VidringBillingApplication.PROPERTIES_LOCATION_ENV, "classpath:/");
 		String configPath = configLocation + " - " + VidringBillingApplication.PROPERTIES_FILE_NAME;
 		log.info("Configpath: {}", configPath);
