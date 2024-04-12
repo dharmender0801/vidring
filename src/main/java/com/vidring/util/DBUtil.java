@@ -54,7 +54,7 @@ public class DBUtil {
 			VidringSubscriptionModel checkModel = vidringSubRepo.findByMsisdn(msisdn).get();
 			if (checkModel == null) {
 				VidringSubscriptionModel subscriptionModel = new VidringSubscriptionModel();
-				BeanUtils.copyProperties(requestModel, subscriptionModel);
+				Utils.copyProperties(requestModel, subscriptionModel);
 				subscriptionModel.setId(null);
 				subscriptionModel.setValidity(requestModel.getProductModel().getValidity());
 				subscriptionModel.setSubscriptionDate(new Date());
@@ -110,7 +110,7 @@ public class DBUtil {
 		VidringSubscriptionModel subModel = vidringSubRepo.findByMsisdn(msisdn).get();
 		if (subModel != null) {
 			VidringUnSubscriptionModel unSubscriptionModel = new VidringUnSubscriptionModel();
-			BeanUtils.copyProperties(subModel, unSubscriptionModel);
+			Utils.copyProperties(subModel, unSubscriptionModel);
 			unSubscriptionModel.setUnsubscriptionDate(new Date());
 			unSubscriptionModel.setId(null);
 			unSubscriptionRepo.save(unSubscriptionModel);
@@ -124,10 +124,12 @@ public class DBUtil {
 		// TODO Auto-generated method stub
 		VidringSubscriptionRequestModel requestModel = new VidringSubscriptionRequestModel();
 		requestModel.setMsisdn(msisdn);
+		requestModel.setCountryCode(productModel.getCountryCode());
+		requestModel.setOperatorId(productModel.getOperatorId());
 		requestModel.setTransactionId(transactionId);
 		requestModel.setProductModel(productModel);
-		requestModel.setRequest(requestBody);
-		requestModel.setResponse(httpResponse);
+		requestModel.setPinPushrequest(requestBody);
+		requestModel.setPinPushresponse(httpResponse);
 		requestModel.setRequestDate(new Date());
 		repo.save(requestModel);
 
@@ -148,4 +150,5 @@ public class DBUtil {
 		successRepo.save(billingSuccessModel);
 
 	}
+
 }

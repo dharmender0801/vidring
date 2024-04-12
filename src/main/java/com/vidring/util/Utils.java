@@ -1,7 +1,11 @@
 package com.vidring.util;
 
+import java.util.Base64;
 import java.util.HashSet;
 import java.util.Set;
+
+import javax.crypto.Cipher;
+import javax.crypto.spec.SecretKeySpec;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeanWrapper;
@@ -36,4 +40,16 @@ public class Utils {
 			return null;
 		}
 	}
+
+	public static String TimweEncryption(String Data, String preSharedKey) throws Exception {
+		String phrasetoEncrypt = Data + "#" + System.currentTimeMillis();
+		String encryptionAlgorithm = "AES/ECB/PKCS5Padding";
+		Cipher cipher = Cipher.getInstance(encryptionAlgorithm);
+		SecretKeySpec key = new SecretKeySpec(preSharedKey.getBytes(), "AES");
+		cipher.init(Cipher.ENCRYPT_MODE, key);
+		final byte[] crypted = cipher.doFinal(phrasetoEncrypt.getBytes());
+		String encrypted = Base64.getEncoder().encodeToString(crypted);
+		return encrypted;
+	}
+
 }

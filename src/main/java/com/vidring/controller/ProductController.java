@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.vidring.dto.VidringProductDto;
@@ -65,6 +66,23 @@ public class ProductController {
 		productDto = productService.addProductDetails(productDto);
 		return (Boolean.TRUE.equals(Objects.nonNull(productDto)))
 				? RestUtils.successResponse(productDto, Constants.SUCCESS, HttpStatus.OK)
+				: RestUtils.errorResponse(null, Constants.FAIL, HttpStatus.NOT_FOUND);
+	}
+
+	@ApiOperation(value = "Get Multiple Product", response = VidringProductDto.class, httpMethod = "GET", notes = "")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "ok", response = VidringProductDto.class, responseContainer = "LIS"),
+			@ApiResponse(code = 401, message = "Not Authorized"),
+			@ApiResponse(code = 403, message = "Not Authenticated"), @ApiResponse(code = 404, message = "Not found"),
+			@ApiResponse(code = 500, message = "Internal Server Error") })
+	@GetMapping(path = "/getProductByCountry", produces = "application/json")
+	public ResponseEntity<RestResponse<List<VidringProductDto>>> getProductByCountry(
+			@RequestHeader(name = Constants.DEVICE_TYPE) DeviceType deviceType,
+			@RequestHeader(name = Constants.APP_VERSION) String appVersion,
+			@RequestParam(name = "countryCode") String countryCode) throws Exception {
+		List<VidringProductDto> data = productService.geProductDataByCountryCode(countryCode);
+		return (Boolean.TRUE.equals(Objects.nonNull(data)))
+				? RestUtils.successResponse(data, Constants.SUCCESS, HttpStatus.OK)
 				: RestUtils.errorResponse(null, Constants.FAIL, HttpStatus.NOT_FOUND);
 	}
 

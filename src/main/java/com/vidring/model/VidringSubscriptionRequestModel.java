@@ -26,11 +26,22 @@ public class VidringSubscriptionRequestModel {
 	@Column
 	private String transactionId;
 	@Column
-	private Date requestDate;
-	@Column(columnDefinition = "1025")
-	private String request;
+	private String countryCode;
 	@Column
-	private String response;
+	private String operatorId;
+	@Column
+	private Date requestDate;
+	@Column(columnDefinition = "2048")
+	private String pinPushrequest;
+	@Column(columnDefinition = "2048")
+	private String pinPushresponse;
+	@Column
+	private Date pinVerificationDate;
+	@Column(columnDefinition = "2048")
+	private String pinVerifyRequest;
+	@Column(columnDefinition = "2048")
+	private String pinVerifyResponse;
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "product_id", nullable = false)
 	private VidringProductModel productModel;

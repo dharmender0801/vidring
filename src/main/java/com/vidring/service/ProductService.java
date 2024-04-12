@@ -37,4 +37,14 @@ public class ProductService {
 		return productDto;
 	}
 
+	public List<VidringProductDto> geProductDataByCountryCode(String countryCode) {
+		// TODO Auto-generated method stub
+		List<VidringProductDto> dtos = productRepo.findByCountryCode(countryCode).stream().map(product -> {
+			VidringProductDto dto = new VidringProductDto();
+			Utils.copyProperties(product, dto);
+			return dto;
+		}).collect(Collectors.toList());
+		return dtos;
+	}
+
 }

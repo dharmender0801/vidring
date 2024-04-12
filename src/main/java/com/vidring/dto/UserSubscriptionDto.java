@@ -15,6 +15,8 @@ public class UserSubscriptionDto {
 	private String productId;
 	private String channel;
 	private String operatorId;
+	private String countryCode;
 	private String otp;
 	private String transactionId;
+
 }
