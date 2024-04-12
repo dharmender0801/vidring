@@ -72,9 +72,9 @@ public class TimweService {
 					log.info("Timwe pin Push Push end point " + endPoint);
 					log.info("Timwe Pin Push Request  ::::  {} ", Utils.classToJsonConvert(optinRequest));
 					HttpHeaders headers = new HttpHeaders();
-					String auth = encrypt("708", partnerModel.getPassword());
+					String auth = encrypt("708", partnerModel.getUserName());
 					log.info(auth);
-					headers.set("apikey", partnerModel.getUserName());
+					headers.set("apikey", partnerModel.getPassword());
 					headers.set("external-tx-id", String.valueOf(transactionId));
 					headers.set("authentication", auth);
 					headers.set("Content-Type", "application/json");
