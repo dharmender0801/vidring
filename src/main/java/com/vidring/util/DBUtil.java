@@ -128,8 +128,8 @@ public class DBUtil {
 		requestModel.setOperatorId(productModel.getOperatorId());
 		requestModel.setTransactionId(transactionId);
 		requestModel.setProductModel(productModel);
-		requestModel.setPinPushrequest(requestBody);
-		requestModel.setPinPushresponse(httpResponse);
+		requestModel.setPinPushRequest(requestBody);
+		requestModel.setPinPushResponse(httpResponse);
 		requestModel.setRequestDate(new Date());
 		repo.save(requestModel);
 

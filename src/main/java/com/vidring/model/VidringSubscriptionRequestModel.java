@@ -32,9 +32,9 @@ public class VidringSubscriptionRequestModel {
 	@Column
 	private Date requestDate;
 	@Column(columnDefinition = "2048")
-	private String pinPushrequest;
+	private String pinPushRequest;
 	@Column(columnDefinition = "2048")
-	private String pinPushresponse;
+	private String pinPushResponse;
 	@Column
 	private Date pinVerificationDate;
 	@Column(columnDefinition = "2048")
