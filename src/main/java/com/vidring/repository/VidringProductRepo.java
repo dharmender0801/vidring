@@ -8,6 +8,6 @@ public interface VidringProductRepo extends JpaRepository<VidringProductModel, L
 
 	VidringProductModel findByProductId(String productId);
 
-	VidringProductModel findByMccAndMnc(String mcc, String mnc);
+	VidringProductModel findByOfferCode(String productId);
 
 }

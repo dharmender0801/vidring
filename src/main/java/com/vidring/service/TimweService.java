@@ -163,11 +163,11 @@ public class TimweService {
 		try {
 			if (Boolean.TRUE.equals(action.equalsIgnoreCase("sub"))) {
 				VidringSubscriptionModel model = dbUtil.saveUserSubscription(notificationRequest, "Web");
-				dbUtil.updateUserSubscription(notificationRequest.getMsisdn());
+				dbUtil.updateUserSubscription(notificationRequest.getUserIdentifier());
 			} else if (Boolean.TRUE.equals(action.equalsIgnoreCase("ren"))) {
-				dbUtil.updateUserSubscription(notificationRequest.getMsisdn());
+				dbUtil.updateUserSubscription(notificationRequest.getUserIdentifier());
 			} else if (Boolean.TRUE.equals(action.equalsIgnoreCase("unsub"))) {
-				dbUtil.unSubscribeUser(notificationRequest.getMsisdn());
+				dbUtil.unSubscribeUser(notificationRequest.getUserIdentifier());
 			} else if (Boolean.TRUE.equals(action.equalsIgnoreCase("mt"))) {
 
 			} else if (Boolean.TRUE.equals(action.equalsIgnoreCase("mo"))) {

@@ -11,7 +11,7 @@ public class NotificationRequest {
 	private String mcc;
 	private String mnc;
 	private String text;
-	private String msisdn;
+	private String userIdentifier;
 	private String largeAccount;
 	private String transactionUUID;
 	private List<String> tags;

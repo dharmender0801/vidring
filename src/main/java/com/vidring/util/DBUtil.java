@@ -74,14 +74,16 @@ public class DBUtil {
 	}
 
 	public VidringSubscriptionModel saveUserSubscription(NotificationRequest notification, String channel) {
-		VidringSubscriptionModel subModel = vidringSubRepo.findByMsisdn(notification.getMsisdn())
-				.orElse(new VidringSubscriptionModel());
-
-		VidringProductModel productModel = productRepo.findByMccAndMnc(notification.getMcc(), notification.getMnc());
-		subModel.setMsisdn(notification.getMsisdn());
+		VidringSubscriptionModel subModel = vidringSubRepo.findByMsisdn(notification.getUserIdentifier())
+				.orElseGet(() -> {
+					VidringSubscriptionModel model = new VidringSubscriptionModel();
+					model.setSubscriptionDate(new Date());
+					return model;
+				});
+		VidringProductModel productModel = productRepo.findByOfferCode(notification.getProductId());
+		subModel.setMsisdn(notification.getUserIdentifier());
 		subModel.setProductModel(productModel);
 		subModel.setValidity(productModel.getValidity());
-		subModel.setSubscriptionDate(new Date());
 		subModel.setChannel(channel);
 		subModel = vidringSubRepo.save(subModel);
 		return subModel;
