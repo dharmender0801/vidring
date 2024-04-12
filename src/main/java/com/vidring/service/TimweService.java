@@ -69,11 +69,13 @@ public class TimweService {
 					optinRequest.setMnc(productModel.getMnc());
 					optinRequest.setProductId(productModel.getOfferCode());
 					String endPoint = partnerModel.getEndPoint();
-					log.info("Timwe pin Push Push end point " + endPoint);
+					log.info("Timwe pin Push Push end point :{} ", endPoint);
 					log.info("Timwe Pin Push Request  ::::  {} ", Utils.classToJsonConvert(optinRequest));
 					HttpHeaders headers = new HttpHeaders();
+					log.info("API KEY : {} ", partnerModel.getPassword());
+					log.info("PRESHARED KEY : {} ", partnerModel.getUserName());
 					String auth = encrypt("708", partnerModel.getUserName());
-					log.info(auth);
+					log.info("Genrated key :{}", auth);
 					headers.set("apikey", partnerModel.getPassword());
 					headers.set("external-tx-id", String.valueOf(transactionId));
 					headers.set("authentication", auth);
@@ -102,14 +104,14 @@ public class TimweService {
 	}
 
 	String encrypt(String Data, String preSharedKey) throws Exception {
-		long timestamp = System.currentTimeMillis();
-		String timestampStr = String.valueOf(timestamp);
-		String data = Data + "#" + timestampStr;
-		SecretKeySpec keySpec = new SecretKeySpec(preSharedKey.getBytes(), "AES");
-		Cipher c = Cipher.getInstance("AES/CBC/PKCS5PADDING");
-		c.init(Cipher.ENCRYPT_MODE, keySpec, new IvParameterSpec(new SecureRandom().generateSeed(16)));
-		byte[] encVal = c.doFinal(data.getBytes());
-		return new String(Base64.getEncoder().encodeToString(encVal));
+		String phrasetoEncrypt = Data + "#" + System.currentTimeMillis();
+		String encryptionAlgorithm = "AES/ECB/PKCS5Padding";
+		Cipher cipher = Cipher.getInstance(encryptionAlgorithm);
+		SecretKeySpec key = new SecretKeySpec(preSharedKey.getBytes(), "AES");
+		cipher.init(Cipher.ENCRYPT_MODE, key);
+		final byte[] crypted = cipher.doFinal(phrasetoEncrypt.getBytes());
+		String encrypted = Base64.getEncoder().encodeToString(crypted);
+		return encrypted;
 	}
 
 	public StatusResponse handleNotification(NotificationRequest notificationRequest, String roleId, String action) {
