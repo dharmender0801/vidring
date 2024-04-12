@@ -89,8 +89,7 @@ public class TimweService {
 					SubscriptonOptinResponse httpResponse = responseEntity.getBody();
 					log.info("Timwe Pin Push Response ::::  {} ", httpResponse);
 					dbUtil.saveSubscriptionRequest(pinPushRequest.getMsisdn(), String.valueOf(transactionId),
-							productModel, Utils.classToJsonConvert(optinRequest),
-							Utils.classToJsonConvert(httpResponse));
+							productModel, optinRequest.toString(), httpResponse.toString());
 					return ConstantManager.getSuccess();
 				} else {
 					return ConstantManager.getPartnerNotFound();
