@@ -36,7 +36,7 @@ public class TimweController {
 	}
 
 	@PostMapping("v1/pin-verify")
-	public ResponseEntity<StatusResponse> pinPush(@RequestBody UserSubscriptionDto subDto) {
+	public ResponseEntity<StatusResponse> pinPush(@RequestBody UserSubscriptionDto subDto) throws Exception {
 		StatusResponse response = timweService.sendPinVerify(subDto);
 		return response.getStatusCode() == 200 ? new ResponseEntity<>(response, HttpStatus.OK)
 				: new ResponseEntity<>(response, HttpStatus.BAD_GATEWAY);
