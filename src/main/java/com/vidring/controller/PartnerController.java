@@ -67,5 +67,10 @@ public class PartnerController {
 				? RestUtils.successResponse(data, Constants.SUCCESS, HttpStatus.OK)
 				: RestUtils.errorResponse(null, Constants.FAIL, HttpStatus.NOT_FOUND);
 	}
+	
+	
+	
+	
+	
 
 }
