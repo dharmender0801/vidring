@@ -31,15 +31,15 @@ public class VidringSubscriptionRequestModel {
 	private String operatorId;
 	@Column
 	private Date requestDate;
-	@Column(columnDefinition = "2048")
+	@Column(columnDefinition = "varchar(2048)")
 	private String pinPushRequest;
-	@Column(columnDefinition = "2048")
+	@Column(columnDefinition = "varchar(2048)")
 	private String pinPushResponse;
 	@Column
 	private Date pinVerificationDate;
-	@Column(columnDefinition = "2048")
+	@Column(columnDefinition = "varchar(2048)")
 	private String pinVerifyRequest;
-	@Column(columnDefinition = "2048")
+	@Column(columnDefinition = "varchar(2048)")
 	private String pinVerifyResponse;
 
 	@ManyToOne(fetch = FetchType.LAZY)
