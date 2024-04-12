@@ -23,7 +23,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @SpringBootApplication
 @EntityScan(basePackageClasses = { VidringBillingApplication.class, Jsr310JpaConverters.class })
-@ComponentScan("com.nubit.minus.one")
+@ComponentScan("com.vidring")
 @EnableAsync
 @PropertySource(ignoreResourceNotFound = true, value = {
 		"file:${" + VidringBillingApplication.PROPERTIES_LOCATION_ENV + "}/"
