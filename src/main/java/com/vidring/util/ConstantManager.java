@@ -39,4 +39,11 @@ public class ConstantManager {
 		return response;
 	}
 
+	public static final StatusResponse TransNotFound() {
+		StatusResponse response = new StatusResponse();
+		response.setStatusCode(404);
+		response.setStatusDescription("Transaction Id Not Found ! ");
+		return response;
+	}
+
 }

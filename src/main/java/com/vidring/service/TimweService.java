@@ -17,15 +17,18 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import com.vidring.dto.UserSubscriptionDto;
 import com.vidring.model.VidringPartnerModel;
 import com.vidring.model.VidringProductModel;
 import com.vidring.model.VidringSubscriptionModel;
+import com.vidring.model.VidringSubscriptionRequestModel;
 import com.vidring.repository.VidringPartnerRepo;
 import com.vidring.repository.VidringProductRepo;
+import com.vidring.repository.VidringSubscriptionRequestRepo;
 import com.vidring.request.NotificationRequest;
 import com.vidring.request.PinPushRequest;
 import com.vidring.response.StatusResponse;
-import com.vidring.restTemplateRequests.subscriptionOptinRequest;
+import com.vidring.restTemplateRequests.subscriptionOptRequest;
 import com.vidring.restTemplateResponse.SubscriptonOptinResponse;
 import com.vidring.util.ConstantManager;
 import com.vidring.util.DBUtil;
@@ -45,6 +48,8 @@ public class TimweService {
 	private VidringPartnerRepo partnerRepo;
 	@Autowired
 	RestTemplate restTemplate;
+	@Autowired
+	private VidringSubscriptionRequestRepo subscriptionRequestRepo;
 
 	public StatusResponse sendPinPushRequest(PinPushRequest pinPushRequest) {
 
@@ -56,14 +61,14 @@ public class TimweService {
 						.findByCountryCodeAndOperatorId(productModel.getCountryCode(), productModel.getOperatorId());
 				if (Boolean.TRUE.equals(Objects.nonNull(partnerModel))) {
 					long transactionId = (long) (Math.random() * 100000000000000L);
-					subscriptionOptinRequest optinRequest = new subscriptionOptinRequest();
+					subscriptionOptRequest optinRequest = new subscriptionOptRequest();
 					optinRequest.setUserIdentifier(pinPushRequest.getMsisdn());
-					optinRequest.setClientIp("Tst");
-					optinRequest.setUserIdentifierType("sub");
+					optinRequest.setClientIp("203.190.154.20");
+					optinRequest.setUserIdentifierType("MSISDN");
 					optinRequest.setLargeAccount("1936");
 					optinRequest.setCampaignUrl(productModel.getCampaign());
 					optinRequest.setSubKeyword(productModel.getSubKeyword());
-					optinRequest.setEntryChannel(pinPushRequest.getChannel());
+					optinRequest.setEntryChannel("WEB");
 					optinRequest.setTrackingId(String.valueOf(transactionId));
 					optinRequest.setMcc(productModel.getMcc());
 					optinRequest.setMnc(productModel.getMnc());
@@ -72,20 +77,17 @@ public class TimweService {
 					log.info("Timwe pin Push Push end point :{} ", endPoint);
 					log.info("Timwe Pin Push Request  ::::  {} ", Utils.classToJsonConvert(optinRequest));
 					HttpHeaders headers = new HttpHeaders();
-					log.info("API KEY : {} ", partnerModel.getPassword());
-					log.info("PRESHARED KEY : {} ", partnerModel.getUserName());
 					String auth = encrypt("708", partnerModel.getUserName());
-					log.info("Genrated key :{}", auth);
 					headers.set("apikey", partnerModel.getPassword());
 					headers.set("external-tx-id", String.valueOf(transactionId));
 					headers.set("authentication", auth);
 					headers.set("Content-Type", "application/json");
 					headers.set("accept", "application/json");
-					HttpEntity<subscriptionOptinRequest> requestEntity = new HttpEntity<>(optinRequest, headers);
+					HttpEntity<subscriptionOptRequest> requestEntity = new HttpEntity<>(optinRequest, headers);
 					ResponseEntity<SubscriptonOptinResponse> responseEntity = restTemplate.exchange(endPoint,
 							HttpMethod.POST, requestEntity, SubscriptonOptinResponse.class);
-					log.info("Timwe Pin Push Response ::::  {} ", responseEntity);
 					SubscriptonOptinResponse httpResponse = responseEntity.getBody();
+					log.info("Timwe Pin Push Response ::::  {} ", httpResponse);
 					dbUtil.saveSubscriptionRequest(pinPushRequest.getMsisdn(), String.valueOf(transactionId),
 							productModel, Utils.classToJsonConvert(optinRequest),
 							Utils.classToJsonConvert(httpResponse));
@@ -101,6 +103,47 @@ public class TimweService {
 			return ConstantManager.getInternalServerError();
 		}
 
+	}
+
+	public StatusResponse sendPinVerify(UserSubscriptionDto pinPushRequest) throws Exception {
+		// TODO Auto-generated method stub
+		VidringSubscriptionRequestModel requestModel = subscriptionRequestRepo
+				.findByTransactionId(pinPushRequest.getTransactionId());
+		if (Boolean.TRUE.equals(Objects.nonNull(requestModel))) {
+			VidringPartnerModel partnerModel = partnerRepo.findByCountryCodeAndOperatorId(
+					requestModel.getProductModel().getCountryCode(), requestModel.getProductModel().getOperatorId());
+			if (Boolean.TRUE.equals(Objects.nonNull(partnerModel))) {
+				subscriptionOptRequest optinRequest = new subscriptionOptRequest();
+				optinRequest.setUserIdentifier(pinPushRequest.getMsisdn());
+				optinRequest.setClientIp("203.190.154.20");
+				optinRequest.setUserIdentifierType("MSISDN");
+				optinRequest.setSubKeyword(requestModel.getProductModel().getSubKeyword());
+				optinRequest.setEntryChannel("WEB");
+				optinRequest.setMcc(requestModel.getProductModel().getMcc());
+				optinRequest.setMnc(requestModel.getProductModel().getMnc());
+				optinRequest.setProductId(requestModel.getProductModel().getOfferCode());
+				optinRequest.setTransactionAuthCode(pinPushRequest.getOtp());
+				log.info("Timwe Pin verify Request  ::::  {} ", Utils.classToJsonConvert(optinRequest));
+
+				long transactionId = (long) (Math.random() * 100000000000000L);
+				HttpHeaders headers = new HttpHeaders();
+				String auth = encrypt("708", partnerModel.getUserName());
+				headers.set("apikey", partnerModel.getPassword());
+				headers.set("external-tx-id", String.valueOf(transactionId));
+				headers.set("authentication", auth);
+				headers.set("Content-Type", "application/json");
+				headers.set("accept", "application/json");
+				HttpEntity<subscriptionOptRequest> requestEntity = new HttpEntity<>(optinRequest, headers);
+				ResponseEntity<SubscriptonOptinResponse> responseEntity = restTemplate.exchange(
+						"https://tigo.timwe.com/gh/ma/api/external/v1/subscription/optin/confirm/726", HttpMethod.POST,
+						requestEntity, SubscriptonOptinResponse.class);
+				SubscriptonOptinResponse httpResponse = responseEntity.getBody();
+				log.info("Timwe Pin Verify Request  ::::  {} ", Utils.classToJsonConvert(httpResponse));
+			}
+
+			return ConstantManager.getSuccess();
+		}
+		return ConstantManager.TransNotFound();
 	}
 
 	String encrypt(String Data, String preSharedKey) throws Exception {

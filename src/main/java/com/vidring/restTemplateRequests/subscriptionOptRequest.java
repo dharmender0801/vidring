@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class subscriptionOptinRequest {
+public class subscriptionOptRequest {
 
 	private String userIdentifier;
 	private String userIdentifierType;
@@ -20,5 +20,6 @@ public class subscriptionOptinRequest {
 	private String trackingId;
 	private String clientIp;
 	private String campaignUrl;
+	private String transactionAuthCode;
 
 }
