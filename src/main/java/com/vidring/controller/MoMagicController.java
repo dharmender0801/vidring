@@ -16,8 +16,11 @@ import com.vidring.response.StatusResponse;
 import com.vidring.response.statusResponseWithUrl;
 import com.vidring.service.MoMagicService;
 
+import io.swagger.annotations.Api;
+
 @RestController
 @RequestMapping("/mo-magic/")
+@Api(value = "REST API for MoMAGIC Details Services", tags = { "MoMagic Controller" })
 public class MoMagicController {
 	@Autowired
 	private MoMagicService magicService;
