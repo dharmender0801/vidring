@@ -175,7 +175,9 @@ public class TimweService {
 		try {
 			if (Boolean.TRUE.equals(action.equalsIgnoreCase("sub"))) {
 				dbUtil.saveUserSubscription(notificationRequest, "WEB");
+				dbUtil.updateUserSubscription(notificationRequest.getUserIdentifier());
 			} else if (Boolean.TRUE.equals(action.equalsIgnoreCase("ren"))) {
+				dbUtil.saveUserSubscription(notificationRequest, "WEB");
 				dbUtil.updateUserSubscription(notificationRequest.getUserIdentifier());
 			} else if (Boolean.TRUE.equals(action.equalsIgnoreCase("unsub"))) {
 				dbUtil.unSubscribeUser(notificationRequest.getUserIdentifier());
