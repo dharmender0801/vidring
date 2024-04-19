@@ -35,5 +35,7 @@ public class VidringPartnerModel {
 	private String errorUrl;
 	@Column
 	private String partnerId;
+	@Column
+	private String unsubEndpoint;
 
 }
