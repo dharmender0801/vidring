@@ -13,6 +13,7 @@ import com.vidring.repository.VidringProductRepo;
 import com.vidring.repository.VidringSubRepo;
 import com.vidring.repository.VidringSubscriptionRequestRepo;
 import com.vidring.response.StatusResponse;
+import com.vidring.util.ConstantManager;
 import com.vidring.util.DBUtil;
 
 import lombok.extern.slf4j.Slf4j;
@@ -49,7 +50,7 @@ public class SubscriptionService {
 
 		}
 
-		return null;
+		return ConstantManager.AlreadySubscribed();
 	}
 
 	public StatusResponse UserPinVerify(UserSubscriptionDto subscriptionDto) throws Exception {

@@ -39,6 +39,13 @@ public class ConstantManager {
 		return response;
 	}
 
+	public static final StatusResponse AlreadySubscribed() {
+		StatusResponse response = new StatusResponse();
+		response.setStatusCode(208);
+		response.setStatusDescription("User Already Subscribed ");
+		return response;
+	}
+
 	public static final StatusResponse TransNotFound() {
 		StatusResponse response = new StatusResponse();
 		response.setStatusCode(404);
