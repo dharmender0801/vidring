@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.vidring.dto.UserSubscriptionDto;
 import com.vidring.request.NotificationRequest;
-import com.vidring.request.PinPushRequest;
 import com.vidring.response.StatusResponse;
 import com.vidring.service.TimweService;
 
@@ -29,14 +28,14 @@ public class TimweController {
 	}
 
 	@PostMapping("v1/pin-push")
-	public ResponseEntity<StatusResponse> pinPush(@RequestBody PinPushRequest pinPushRequest) {
+	public ResponseEntity<StatusResponse> pinPush(@RequestBody UserSubscriptionDto pinPushRequest) {
 		StatusResponse response = timweService.sendPinPushRequest(pinPushRequest);
 		return response.getStatusCode() == 200 ? new ResponseEntity<>(response, HttpStatus.OK)
 				: new ResponseEntity<>(response, HttpStatus.BAD_GATEWAY);
 	}
 
 	@PostMapping("v1/pin-verify")
-	public ResponseEntity<StatusResponse> pinPush(@RequestBody UserSubscriptionDto subDto) throws Exception {
+	public ResponseEntity<StatusResponse> pinVerify(@RequestBody UserSubscriptionDto subDto) throws Exception {
 		StatusResponse response = timweService.sendPinVerify(subDto);
 		return response.getStatusCode() == 200 ? new ResponseEntity<>(response, HttpStatus.OK)
 				: new ResponseEntity<>(response, HttpStatus.BAD_GATEWAY);

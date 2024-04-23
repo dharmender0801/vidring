@@ -1,13 +1,10 @@
 package com.vidring.service;
 
-import java.security.Key;
-import java.security.SecureRandom;
 import java.util.Base64;
 import java.util.Date;
 import java.util.Objects;
 
 import javax.crypto.Cipher;
-import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +18,6 @@ import org.springframework.web.client.RestTemplate;
 import com.vidring.dto.UserSubscriptionDto;
 import com.vidring.model.VidringPartnerModel;
 import com.vidring.model.VidringProductModel;
-import com.vidring.model.VidringSubscriptionModel;
 import com.vidring.model.VidringSubscriptionRequestModel;
 import com.vidring.repository.VidringPartnerRepo;
 import com.vidring.repository.VidringProductRepo;
@@ -52,7 +48,7 @@ public class TimweService {
 	@Autowired
 	private VidringSubscriptionRequestRepo subscriptionRequestRepo;
 
-	public StatusResponse sendPinPushRequest(PinPushRequest pinPushRequest) {
+	public StatusResponse sendPinPushRequest(UserSubscriptionDto pinPushRequest) {
 
 		// TODO Auto-generated method stub
 		try {
@@ -92,7 +88,7 @@ public class TimweService {
 					dbUtil.saveSubscriptionRequest(pinPushRequest.getMsisdn(), String.valueOf(transactionId),
 							productModel, Utils.classToJsonConvert(optinRequest),
 							Utils.classToJsonConvert(httpResponse));
-					return ConstantManager.getSuccess();
+					return new StatusResponse(200, "Success", 1, String.valueOf(transactionId), null);
 				} else {
 					return ConstantManager.getPartnerNotFound();
 				}
@@ -114,7 +110,6 @@ public class TimweService {
 			VidringPartnerModel partnerModel = partnerRepo.findByCountryCodeAndOperatorId(
 					requestModel.getProductModel().getCountryCode(), requestModel.getProductModel().getOperatorId());
 			if (Boolean.TRUE.equals(Objects.nonNull(partnerModel))) {
-
 				subscriptionOptRequest optinRequest = new subscriptionOptRequest();
 				optinRequest.setUserIdentifier(pinPushRequest.getMsisdn());
 				optinRequest.setClientIp("203.190.154.20");
@@ -126,24 +121,20 @@ public class TimweService {
 				optinRequest.setProductId(requestModel.getProductModel().getOfferCode());
 				optinRequest.setTransactionAuthCode(pinPushRequest.getOtp());
 				log.info("Timwe Pin verify Request  ::::  {} ", Utils.classToJsonConvert(optinRequest));
-
 				long transactionId = (long) (Math.random() * 100000000000000L);
 				HttpHeaders headers = new HttpHeaders();
 				String auth = encrypt("708", partnerModel.getUserName());
-
 				headers.set("apikey", partnerModel.getPassword());
 				headers.set("external-tx-id", String.valueOf(transactionId));
 				headers.set("authentication", auth);
 				headers.set("Content-Type", "application/json");
 				headers.set("accept", "application/json");
-
 				HttpEntity<subscriptionOptRequest> requestEntity = new HttpEntity<>(optinRequest, headers);
 				ResponseEntity<SubscriptonOptinResponse> responseEntity = restTemplate.exchange(
 						"https://tigo.timwe.com/gh/ma/api/external/v1/subscription/optin/confirm/726", HttpMethod.POST,
 						requestEntity, SubscriptonOptinResponse.class);
 				SubscriptonOptinResponse httpResponse = responseEntity.getBody();
 				log.info("Timwe Pin Verify Request  ::::  {} ", Utils.classToJsonConvert(httpResponse));
-
 				requestModel.setPinVerifyRequest(Utils.classToJsonConvert(optinRequest));
 				requestModel.setPinVerifyResponse(Utils.classToJsonConvert(httpResponse));
 				requestModel.setPinVerificationDate(new Date());
