@@ -5,13 +5,16 @@ import java.util.Objects;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.vidring.dto.UserSubscriptionDto;
+import com.vidring.dto.VidringSubscriptionDto;
 import com.vidring.enums.DeviceType;
 import com.vidring.response.StatusResponse;
 import com.vidring.service.SubscriptionService;
@@ -44,7 +47,7 @@ public class SubscriptionController {
 			@RequestHeader(name = Constants.DEVICE_TYPE, required = false) DeviceType deviceType,
 			@RequestHeader(name = Constants.APP_VERSION, required = false) String appVersion,
 			@RequestBody UserSubscriptionDto subscriptionDto) {
-		log.debug("Partner Requested is: {}", subscriptionDto);
+		log.debug("Application Requested is: {}", subscriptionDto);
 		StatusResponse statusResponse = subscriptionService.SubscribeUser(subscriptionDto);
 		return (Boolean.TRUE.equals(Objects.nonNull(statusResponse)))
 				? RestUtils.successResponse(statusResponse, Constants.SUCCESS, HttpStatus.OK)
@@ -61,8 +64,25 @@ public class SubscriptionController {
 			@RequestHeader(name = Constants.DEVICE_TYPE, required = false) DeviceType deviceType,
 			@RequestHeader(name = Constants.APP_VERSION, required = false) String appVersion,
 			@RequestBody UserSubscriptionDto subscriptionDto) throws Exception {
-		log.debug("Partner Requested is: {}", subscriptionDto);
+		log.debug("Application Verify Requested is: {}", subscriptionDto);
 		StatusResponse statusResponse = subscriptionService.UserPinVerify(subscriptionDto);
+		return (Boolean.TRUE.equals(Objects.nonNull(statusResponse)))
+				? RestUtils.successResponse(statusResponse, Constants.SUCCESS, HttpStatus.OK)
+				: RestUtils.errorResponse(null, Constants.FAIL, HttpStatus.NOT_FOUND);
+	}
+
+	@ApiOperation(value = "Get User Profile ", response = VidringSubscriptionDto.class, httpMethod = "GET", notes = "This API will Provide User Subscription Detail ")
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "ok", response = VidringSubscriptionDto.class),
+			@ApiResponse(code = 401, message = "Not Authorized"),
+			@ApiResponse(code = 403, message = "Not Authenticated"), @ApiResponse(code = 404, message = "Not found"),
+			@ApiResponse(code = 500, message = "Internal Server Error") })
+	@GetMapping(path = "/v1/getUserProfile", produces = "application/json")
+	public ResponseEntity<RestResponse<VidringSubscriptionDto>> getUserProfile(
+			@RequestHeader(name = Constants.DEVICE_TYPE, required = false) DeviceType deviceType,
+			@RequestHeader(name = Constants.APP_VERSION, required = false) String appVersion,
+			@RequestParam(name = "msisdn") String msisdn) throws Exception {
+		log.debug("Partner Requested is: {}", msisdn);
+		VidringSubscriptionDto statusResponse = subscriptionService.getUserDetail(msisdn);
 		return (Boolean.TRUE.equals(Objects.nonNull(statusResponse)))
 				? RestUtils.successResponse(statusResponse, Constants.SUCCESS, HttpStatus.OK)
 				: RestUtils.errorResponse(null, Constants.FAIL, HttpStatus.NOT_FOUND);

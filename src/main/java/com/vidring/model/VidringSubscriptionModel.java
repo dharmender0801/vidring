@@ -35,7 +35,7 @@ public class VidringSubscriptionModel {
 	private String countryCode;
 	@Column
 	private String operatorId;
-	@OneToOne(fetch = FetchType.LAZY)
+	@OneToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "product_id", nullable = false)
 	private VidringProductModel productModel;
 	@Column
