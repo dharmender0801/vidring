@@ -1,6 +1,7 @@
 package com.vidring.util;
 
 import java.util.Date;
+import java.util.Objects;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,11 +82,15 @@ public class DBUtil {
 					return model;
 				});
 		VidringProductModel productModel = productRepo.findByOfferCode(notification.getProductId());
-		subModel.setMsisdn(notification.getUserIdentifier());
-		subModel.setProductModel(productModel);
-		subModel.setValidity(productModel.getValidity());
-		subModel.setChannel(channel);
-		subModel = vidringSubRepo.save(subModel);
+		if (Boolean.TRUE.equals(Objects.nonNull(productModel))) {
+			subModel.setMsisdn(notification.getUserIdentifier());
+			subModel.setProductModel(productModel);
+			subModel.setValidity(productModel.getValidity());
+			subModel.setChannel(channel);
+			subModel.setCountryCode(productModel.getCountryCode());
+			subModel.setOperatorId(productModel.getOperatorId());
+			subModel = vidringSubRepo.save(subModel);
+		}
 		return subModel;
 	}
 
@@ -101,6 +106,7 @@ public class DBUtil {
 			Date date = CalenderUtil.timeExtender(subModel.getProductModel().getValidity());
 			subModel.setChargeDate(new Date());
 			subModel.setExpiryDate(date);
+			subModel.setChargeAmount(subModel.getProductModel().getPricePoint());
 			vidringSubRepo.save(subModel);
 		}
 	}
