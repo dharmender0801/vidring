@@ -40,7 +40,7 @@ public class SubscriptionService {
 	public StatusResponse SubscribeUser(UserSubscriptionDto subscriptionDto) {
 		// TODO Auto-generated method stub
 		Optional<VidringSubscriptionModel> subscriptionModel = vidringSubRepo.findByMsisdn(subscriptionDto.getMsisdn());
-		if (Boolean.TRUE.equals(subscriptionModel.isEmpty())) {
+		if (Boolean.TRUE.equals(!subscriptionModel.isPresent())) {
 			switch (subscriptionDto.getOperatorId()) {
 			case "101":
 				return timweService.sendPinPushRequest(subscriptionDto);
