@@ -40,6 +40,7 @@ public class SubscriptionService {
 	public StatusResponse SubscribeUser(UserSubscriptionDto subscriptionDto) {
 		// TODO Auto-generated method stub
 		Optional<VidringSubscriptionModel> subscriptionModel = vidringSubRepo.findByMsisdn(subscriptionDto.getMsisdn());
+		log.info("{}", subscriptionModel);
 		if (Boolean.TRUE.equals(!subscriptionModel.isPresent())) {
 			switch (subscriptionDto.getOperatorId()) {
 			case "101":
