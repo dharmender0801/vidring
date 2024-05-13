@@ -20,4 +20,15 @@ public class SubscriptonOptinResponse {
 	private String code;
 	private ResponseObject responseData;
 
+	@Data
+	@JsonInclude(JsonInclude.Include.NON_NULL)
+	@AllArgsConstructor
+	@NoArgsConstructor
+	@ToString
+	public static class ResponseObject {
+		private String transactionId;
+		private String subscriptionResult;
+		private String subscriptionError;
+	}
+
 }

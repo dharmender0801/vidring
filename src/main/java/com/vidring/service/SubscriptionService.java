@@ -27,14 +27,6 @@ public class SubscriptionService {
 	@Autowired
 	private VidringSubRepo vidringSubRepo;
 	@Autowired
-	private DBUtil dbUtil;
-	@Autowired
-	private VidringProductRepo productRepo;
-	@Autowired
-	private VidringPartnerRepo partnerRepo;
-	@Autowired
-	private VidringSubscriptionRequestRepo subscriptionRequestRepo;
-	@Autowired
 	private TimweService timweService;
 
 	public StatusResponse SubscribeUser(UserSubscriptionDto subscriptionDto) {
@@ -74,5 +66,18 @@ public class SubscriptionService {
 			dto.setProductModel(subscriptionModel.get().getProductModel());
 		}
 		return dto;
+	}
+
+	public StatusResponse UnsubscribeUser(UserSubscriptionDto subscriptionDto) throws Exception {
+		// TODO Auto-generated method stub
+		if (Boolean.TRUE.equals(Objects.nonNull(subscriptionDto.getMsisdn()))) {
+			switch (subscriptionDto.getOperatorId()) {
+			case "101":
+				return timweService.sendUnsubscriptionRequest(subscriptionDto.getMsisdn());
+			default:
+				break;
+			}
+		}
+		return null;
 	}
 }

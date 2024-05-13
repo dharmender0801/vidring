@@ -16,11 +16,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.vidring.dto.UserSubscriptionDto;
+import com.vidring.model.VidringBillingSuccessModel;
 import com.vidring.model.VidringPartnerModel;
 import com.vidring.model.VidringProductModel;
+import com.vidring.model.VidringSubscriptionModel;
 import com.vidring.model.VidringSubscriptionRequestModel;
 import com.vidring.repository.VidringPartnerRepo;
 import com.vidring.repository.VidringProductRepo;
+import com.vidring.repository.VidringSubRepo;
 import com.vidring.repository.VidringSubscriptionRequestRepo;
 import com.vidring.request.NotificationRequest;
 import com.vidring.request.PinPushRequest;
@@ -47,6 +50,8 @@ public class TimweService {
 	RestTemplate restTemplate;
 	@Autowired
 	private VidringSubscriptionRequestRepo subscriptionRequestRepo;
+	@Autowired
+	private VidringSubRepo vidringSubRepo;
 
 	public StatusResponse sendPinPushRequest(UserSubscriptionDto pinPushRequest) {
 
@@ -140,6 +145,46 @@ public class TimweService {
 				requestModel.setPinVerificationDate(new Date());
 				subscriptionRequestRepo.save(requestModel);
 
+			}
+
+			return ConstantManager.getSuccess();
+		}
+		return ConstantManager.TransNotFound();
+	}
+
+	public StatusResponse sendUnsubscriptionRequest(String msisdn) throws Exception {
+		// TODO Auto-generated method stub
+		VidringSubscriptionModel subModel = vidringSubRepo.findByMsisdn(msisdn).orElse(null);
+		if (Boolean.TRUE.equals(Objects.nonNull(subModel))) {
+			VidringPartnerModel partnerModel = partnerRepo.findByCountryCodeAndOperatorId(
+					subModel.getProductModel().getCountryCode(), subModel.getProductModel().getOperatorId());
+			if (Boolean.TRUE.equals(Objects.nonNull(partnerModel))) {
+				long transactionId = (long) (Math.random() * 100000000000000L);
+				subscriptionOptRequest optoutnRequest = new subscriptionOptRequest();
+				optoutnRequest.setUserIdentifier(subModel.getMsisdn());
+				optoutnRequest.setClientIp("203.190.154.20");
+				optoutnRequest.setUserIdentifierType("MSISDN");
+				optoutnRequest.setSubKeyword(subModel.getProductModel().getSubKeyword());
+				optoutnRequest.setEntryChannel("WEB");
+				optoutnRequest.setMcc(subModel.getProductModel().getMcc());
+				optoutnRequest.setMnc(subModel.getProductModel().getMnc());
+				optoutnRequest.setProductId(subModel.getProductModel().getOfferCode());
+				optoutnRequest.setTrackingId(String.valueOf(transactionId));
+				log.info("Timwe Unsubscription Request  ::::  {} ", Utils.classToJsonConvert(optoutnRequest));
+
+				HttpHeaders headers = new HttpHeaders();
+				String auth = encrypt("708", partnerModel.getUserName());
+				headers.set("apikey", partnerModel.getPassword());
+				headers.set("external-tx-id", String.valueOf(transactionId));
+				headers.set("authentication", auth);
+				headers.set("Content-Type", "application/json");
+				headers.set("accept", "application/json");
+				HttpEntity<subscriptionOptRequest> requestEntity = new HttpEntity<>(optoutnRequest, headers);
+				ResponseEntity<SubscriptonOptinResponse> responseEntity = restTemplate.exchange(
+						"https://tigo.timwe.com/gh/ma/api/external/v1/subscription/optout/726", HttpMethod.POST,
+						requestEntity, SubscriptonOptinResponse.class);
+				SubscriptonOptinResponse httpResponse = responseEntity.getBody();
+				log.info("Timwe Unsubscription Response  ::::  {} ", Utils.classToJsonConvert(httpResponse));
 			}
 
 			return ConstantManager.getSuccess();

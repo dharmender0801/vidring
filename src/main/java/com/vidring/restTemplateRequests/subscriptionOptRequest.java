@@ -1,5 +1,7 @@
 package com.vidring.restTemplateRequests;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,6 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class subscriptionOptRequest {
 
 	private String userIdentifier;
@@ -21,5 +24,10 @@ public class subscriptionOptRequest {
 	private String clientIp;
 	private String campaignUrl;
 	private String transactionAuthCode;
+	private Integer subId;
+	private String controlKeyword;
+	private String controlServiceKeyword;
+	private Integer cancelReason;
+	private Integer cancelSource;
 
 }
