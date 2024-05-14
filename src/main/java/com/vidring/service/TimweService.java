@@ -205,11 +205,13 @@ public class TimweService {
 
 	public StatusResponse handleNotification(NotificationRequest notificationRequest, String roleId, String action) {
 		// TODO Auto-generated method stub
-		log.info("Test : {} ", notificationRequest);
+		log.info("Notification  : {}, Action : {}  ", notificationRequest, action);
 		dbUtil.saveNotfication(notificationRequest.getUserIdentifier(), Utils.classToJsonConvert(notificationRequest),
 				"233", "101");
 		try {
 			if (Boolean.TRUE.equals(action.equalsIgnoreCase("sub"))) {
+				dbUtil.saveUserSubscription(notificationRequest, "WEB");
+			} else if (Boolean.TRUE.equals(action.equalsIgnoreCase("charge"))) {
 				dbUtil.saveUserSubscription(notificationRequest, "WEB");
 				dbUtil.updateUserSubscription(notificationRequest.getUserIdentifier());
 			} else if (Boolean.TRUE.equals(action.equalsIgnoreCase("ren"))) {

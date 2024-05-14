@@ -84,7 +84,7 @@ public class TimweController {
 	@PostMapping("/v1/notification/charge/{partnerRole}")
 	public ResponseEntity<StatusResponse> ChargeNotification(@PathVariable("partnerRole") String roleId,
 			@RequestBody NotificationRequest notificationRequest) {
-		StatusResponse response = timweService.handleNotification(notificationRequest, roleId, "sub");
+		StatusResponse response = timweService.handleNotification(notificationRequest, roleId, "charge");
 		return response.getStatusCode() == 200 ? new ResponseEntity<>(response, HttpStatus.OK)
 				: new ResponseEntity<>(response, HttpStatus.BAD_GATEWAY);
 	}
