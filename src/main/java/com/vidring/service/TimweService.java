@@ -185,6 +185,9 @@ public class TimweService {
 						requestEntity, SubscriptonOptinResponse.class);
 				SubscriptonOptinResponse httpResponse = responseEntity.getBody();
 				log.info("Timwe Unsubscription Response  ::::  {} ", Utils.classToJsonConvert(httpResponse));
+				if (Boolean.TRUE.equals(httpResponse.getCode().equalsIgnoreCase("SUCCESS"))) {
+					dbUtil.unSubscribeUser(msisdn);
+				}
 			}
 
 			return ConstantManager.getSuccess();
